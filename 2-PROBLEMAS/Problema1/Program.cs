@@ -8,9 +8,24 @@ class Program {
         
         int numero;
 
-        Int32.TryParse(Console.ReadLine(), out numero);
+        try
+        {
+            numero = Convert.ToInt32(Console.ReadLine());
 
-        Console.WriteLine($"El cuadrado del número es: {calcularCuadrado(numero)}");
+            Console.WriteLine($"El cuadrado del número es: {calcularCuadrado(numero)}");
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("¡Ingrese un número válido (formato incorrecto)!");
+        }
+        catch(OverflowException)
+        {
+            Console.WriteLine("¡Ingrese un número válido (error de overflow)!");
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine("Error, ingrese un número válido.");
+        }
 
         Console.ReadLine();
     }
