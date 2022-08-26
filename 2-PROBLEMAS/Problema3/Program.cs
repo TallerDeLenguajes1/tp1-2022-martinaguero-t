@@ -1,4 +1,4 @@
-﻿namespace Problema2;
+﻿namespace Problema3;
 
 class Program {
 
