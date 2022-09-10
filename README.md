@@ -5,7 +5,7 @@ Agüero Trevisan Martin Gabriel
 ---
 
 ## Respuestas a ejercicios 
----
+
 ### Ejercicio 4
 
 a) **Cuando se captura una excepción, existen muchas formas de lanzar la excepción al
