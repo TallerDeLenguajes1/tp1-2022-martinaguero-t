@@ -1,7 +1,10 @@
 ﻿namespace Ejercicio3;
+using NLog;
 class Program {
 
     static int Main(string[] args){
+
+        Logger logger = LogManager.GetCurrentClassLogger();
 
         int numEmpleados = obtenerNumeroEmpleados();
         List<Empleado> empleados = new List<Empleado>();
@@ -57,14 +60,25 @@ class Program {
 
                 empleados.Add(nuevoEmpleado);
 
+                logger.Info("Se cargó la información del empleado.");
+                
             }
         }
-        catch (System.Exception ex)
+        catch (ArgumentNullException ex)
         {
             Console.WriteLine($"Hubo un error: {ex.Message}");
+            logger.Warn($"El usuario no ingresó alguno de los siguientes campos: {ex.Message}");
+        }
+        catch (Exception ex2)
+        {
+            Console.WriteLine($"Hubo un error inesperado: {ex2.Message}");
+            logger.Warn($"Ocurrió un error: {ex2.Message}");
         }
 
+        
         mostrarInformacionEmpleados(empleados);
+
+        Console.ReadLine();
 
         return 0;
 
@@ -82,6 +96,7 @@ class Program {
             catch (FormatException)
             {
                 Console.WriteLine("Error: ingrese un valor correcto");
+
             }
             catch (OverflowException)
             {
@@ -182,6 +197,7 @@ class Program {
     static TituloUniversitario obtenerTitulacion() {
 
         bool tieneTitulo = false, cargado = false;
+        int opcion = 0;
 
         TituloUniversitario? titulo = null;
         
@@ -193,7 +209,10 @@ class Program {
 
                 Console.WriteLine("  0- NO");
                 Console.WriteLine("  1- SI");
-                tieneTitulo = Convert.ToBoolean(Console.Read());
+
+                Int32.TryParse(Console.ReadLine(), out opcion);
+
+                tieneTitulo = Convert.ToBoolean(opcion);
                 cargado = true;
             }
             catch (FormatException)

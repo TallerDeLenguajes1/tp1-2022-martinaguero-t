@@ -13,9 +13,10 @@ class Empleado {
     private eCivil estadoCivil;
     private TituloUniversitario? titulo;
     public Empleado(string nombre, string apellido, string direccion, DateTime fechaNacimiento, eCivil estadoCivil, int cantidadHijos, DateTime fechaIngreso, double sueldoBase, DateTime? fechaDivorcio = null, TituloUniversitario? titulo = null){
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.direccion = direccion;
+        if(string.IsNullOrEmpty(nombre)) throw new ArgumentNullException("No se ingresó un nombre."); else this.nombre = nombre;
+        if(string.IsNullOrEmpty(apellido)) throw new ArgumentNullException("No se ingresó un apellido."); else this.apellido = apellido;
+        if(string.IsNullOrEmpty(direccion)) throw new ArgumentNullException("No se ingresó una direccion."); else this.direccion = direccion;
+
         this.fechaNacimiento = fechaNacimiento;
         this.fechaIngreso = fechaIngreso;
         this.sueldoBase = sueldoBase;
