@@ -22,7 +22,27 @@ catch(Exception ex)
 }
 ```
 
-_throw_  es una palabra reservada del lenguaje que se utiliza para lanzar excepciones. La principal diferencia entre _throw;_ y _throw ex;_ es que, si bien ambas sentencias lanzan la misma excepcion _ex_, la segunda reinicia el _StackTrace_ que se describe más abajo (**en general** la primera no lo hace). Es por eso que resulta más conveniente para cuando un método debe lanzar una excepción a otro que a su vez debe lanzar dicha excepción al método original (_re-throwing_). Por otro lado, _throw new AlgunaExcepcion("mensaje de error 2");_ y _throw new AlgunaExcepcion("mensaje de error 1", ex);_  ambas crean una nueva instancia de la clase _Exception_. En el primer caso, se usa el constructor que recibe como parámetro una cadena de caracteres que es el mensaje de descripción del error. En el segundo caso, al constructor se pasa adicionalmente la referencia a la excepción interna, que es la que causa la nueva excepción instanciada.
+_throw_  es una palabra reservada del lenguaje que se utiliza para lanzar excepciones. La principal diferencia entre _throw;_ y _throw ex;_ es que, si bien ambas sentencias lanzan la misma excepcion _ex_, la segunda reinicia el _StackTrace_ que se describe más abajo (**en general** la primera no lo hace*). Es por eso que resulta más conveniente para cuando un método debe lanzar una excepción a otro que a su vez debe lanzar dicha excepción al método original (_re-throwing_). Por otro lado, _throw new AlgunaExcepcion("mensaje de error 2");_ y _throw new AlgunaExcepcion("mensaje de error 1", ex);_  ambas crean una nueva instancia de la clase _Exception_. En el primer caso, se usa el constructor que recibe como parámetro una cadena de caracteres que es el mensaje de descripción del error. En el segundo caso, al constructor se pasa adicionalmente la referencia a la excepción interna, que es la que causa la nueva excepción instanciada.
+
+*_Aclaración_: Es importante notar que no siempre _throw;_ mantiene el StackTrace original. En algunos casos puede ocurrir pérdida de información respecto del origen de la excepción, como ocurre en el siguiente caso:
+
+```C#
+try
+{
+  int i = 0;
+  int j = 12 / i; // Line 47
+  int k = j + 1;
+}
+catch
+{
+  // do something
+  // ...
+  throw; // Line 54
+}
+```
+(Fuente: [Rethrowing exceptions and preserving the full call stack trace] https://weblogs.asp.net/fmarguerie/rethrowing-exceptions-and-preserving-the-full-call-stack-trace)
+
+Así, se mostrará que el origen de la excepción corresponde a la línea 54, cuando en realidad se da en la línea 47. Para este tipo de situaciones se puede utilizar el método _PreserveStackTrace(excepcion)_ que permite mantener la información completa de la pila de llamadas. 
 
 Fuentes: [Difference between \'throw\' and \'throw new Exception()\'
 ](https://stackoverflow.com/questions/2999298/difference-between-throw-and-throw-new-exception), [Is there a difference between "throw" and "throw ex"?](https://stackoverflow.com/questions/730250/is-there-a-difference-between-throw-and-throw-ex) (StackOverFlow), [throw (C# Reference)](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/throw) y [Exception Constructors](https://docs.microsoft.com/en-us/dotnet/api/system.exception.-ctor?view=net-6.0) (Documentación .NET).
